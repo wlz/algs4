@@ -33,15 +33,3 @@ void init_seq()
 	for(int i=0;i<10;i++)
 		seq[i] = i;
 }
-//
-//void print_seq()
-//{
-//	for(int i=0;i<10;i++)
-//	{
-//		printf("%d",seq[i]);
-//		if(i<9)
-//			printf(",");
-//	}
-//
-//	printf("\n");
-//}
