@@ -21,7 +21,7 @@ union(9,4)
 union(2,1)
 
 print connected(0,7)
-print connected(8,9)
+#print connected(8,9)
 
 union(5,0)
 union(7,2)
