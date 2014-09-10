@@ -2,7 +2,7 @@ cnt = 10
 seq = range(cnt) 
 
 def union(a,b):
-	print 'union:'+str(a)+str(b)
+	#print 'union:'+str(a)+str(b)
 	aid = seq[a]
 	bid = seq[b]
 	for i in range(len(seq)):
