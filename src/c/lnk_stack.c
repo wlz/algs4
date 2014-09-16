@@ -60,7 +60,9 @@ void push(char* s)
 char* pop()
 { 
 	char* s = cur->str; 
+	node* tmp = cur;
 	cur = cur->last; 
+	free(tmp);
 
 	return s; 
 }
