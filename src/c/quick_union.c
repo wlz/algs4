@@ -27,7 +27,6 @@ int connected(int *seq, int p, int q)
 void print_seq(int *p, int size)
 {
 	for(int i = 0; i < size; i++) 
-		//		printf("%d ", p[i]); 
 		printf("%d ", *(p + i)); 
 	printf("\n"); 
 }
