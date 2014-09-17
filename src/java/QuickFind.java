@@ -31,10 +31,11 @@ public class QuickFind
 
 	public void setUnion(int p, int q)
 	{ 
+		int n = arr[p];
 		for(int i = 0; i < 10; i++)
 		{
-			if(arr[i] == arr[q])
-				arr[i] = arr[p]; 
+			if(arr[i] == n)
+				arr[i] = arr[q]; 
 		}
 	}
 
@@ -42,4 +43,5 @@ public class QuickFind
 	{
 		return arr[p] == arr[q]; 
 	}
-}
+} 
+
