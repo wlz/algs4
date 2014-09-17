@@ -1,6 +1,5 @@
 #include <stdio.h>
 
-void print_seq(int* p, int sz); 
 void set_union(int* id, int* sz, int p, int q); 
 int connected(int* id, int p , int q); 
 int root(int* id, int n); 
@@ -28,17 +27,9 @@ int main()
 	set_union(id, sz, 6, 1); 
 	set_union(id, sz, 7, 3); 
 
-	printf("%d\n", connected(id, 5, 4)); 
+	printf("%d\n", connected(id, 2, 3)); 
 	return 0; 
 }
-
-void print_seq(int* p, int sz)
-{
-	for(int i = 0; i < sz; i++)
-		printf("%d ", *(p + i)); 	
-
-	printf("\n"); 	
-} 
 
 void set_union(int* id, int* sz, int p, int q) 
 {
@@ -55,7 +46,6 @@ void set_union(int* id, int* sz, int p, int q)
 		id[rp] = id[rq]; 
 		sz[rq]++; 
 	}
-	print_seq(sz, 10); 
 }
 
 int connected(int* id, int p, int q) 
