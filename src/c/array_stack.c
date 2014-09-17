@@ -48,6 +48,3 @@ char* pop()
 {
 	return stack[--point]; 
 } 
-
-
-

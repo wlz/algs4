@@ -23,3 +23,5 @@ union(5, 0)
 union(7, 2)
 union(6, 1)
 union(7, 3)
+
+print connected(2, 3)
