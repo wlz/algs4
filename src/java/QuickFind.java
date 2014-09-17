@@ -44,4 +44,3 @@ public class QuickFind
 		return arr[p] == arr[q]; 
 	}
 } 
-
