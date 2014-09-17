@@ -39,3 +39,4 @@ Icon
 /src/c/*.exe
 /src/cs/*.exe
 /src/cs/*.obj
+/src/java/*.class
