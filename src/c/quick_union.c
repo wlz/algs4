@@ -1,34 +1,21 @@
 #include <stdio.h>
 
-void print_seq(int *, int); 
 void set_union(int *seq, int p, int q)
 { 
 	int rp = root(seq, p); 
 	int rq = root(seq, q); 
 
 	seq[rp] = rq; 
-
-	print_seq(seq, 10); 
 }
 
 int root(int *seq, int n)
 {
-	if(seq[n] == n)
-		return n; 
-	else
-		return root(seq, seq[n]); 
+	return seq[n] == n ? n:root(seq, seq[n]); 
 }
 
 int connected(int *seq, int p, int q)
 {
 	return root(seq, p)==root(seq, q); 
-}
-
-void print_seq(int *p, int size)
-{
-	for(int i = 0; i < size; i++) 
-		printf("%d ", *(p + i)); 
-	printf("\n"); 
 }
 
 int main()
@@ -50,9 +37,10 @@ int main()
 	set_union(seq, 6, 1); 
 	set_union(seq, 7, 3); 
 
-	printf("%d\n", connected(seq, 5, 4)); 
+	printf("%d\n", connected(seq, 2, 3)); 
 
 	return 0; 
 }
+
 
 
