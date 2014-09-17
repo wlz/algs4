@@ -54,9 +54,14 @@ public class Stack
 		current = current.last; 
 		return s; 
 	}
+
+	public bool IsEmpty()
+	{
+		return current.last == null;
+	}
 }
 
-public struct Node
+public class Node
 {
 	public string str; 
 	public Node last; 
