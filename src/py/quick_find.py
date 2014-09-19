@@ -27,3 +27,4 @@ union(6, 1)
 union(1, 0)
 
 print connected(0, 7) 
+
