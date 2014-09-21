@@ -21,18 +21,18 @@ void select_sort(int* p, int size)
 {
 	for(int i = 0; i < size - 1; i++)
 	{
-		int min = i + 1; 
-		for(int j = i + 2; j < size; j++)
-		{ 
-			if(p[j] < p[min])
-				min = j; 
-		} 
-		if(p[min] < p[i])
+		int min = i; 
+		for(int j = i+1; j < size; j++)
 		{
-			int tmp = p[i]; 
-			p[i] = p[min]; 
-			p[min] = tmp; 
-		} 
+			if(p[j] < p[min])
+				min = j;
+		}
+		if(min != i)
+		{
+			int tmp = p[i];
+			p[i] = p[min];
+			p[min] = tmp;
+		}
 	}
 }
 
