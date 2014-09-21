@@ -5,14 +5,14 @@ void print_array(int* p, int size);
 
 int main()
 {
-	int a[10] = {3, 4, 5, 1, 2, 9, 6, 7, 8, 0}; 
+	int a[9] = {7, 10, 5, 3, 8, 4, 2, 9, 6}; 
 
 	printf("before sort: "); 
-	print_array(a, 10); 
+	print_array(a, 9); 
 
-	select_sort(a, 10); 
+	select_sort(a, 9); 
 	printf("after sort : "); 
-	print_array(a, 10); 
+	print_array(a, 9); 
 
 	return 0; 
 }
@@ -42,3 +42,4 @@ void print_array(int* p, int size)
 		printf("%d ", p[i]); 
 	printf("\n"); 
 } 
+
