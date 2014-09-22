@@ -22,16 +22,16 @@ void select_sort(int* p, int size)
 	for(int i = 0; i < size - 1; i++)
 	{
 		int min = i; 
-		for(int j = i+1; j < size; j++)
+		for(int j = i + 1; j < size; j++)
 		{
 			if(p[j] < p[min])
-				min = j;
+				min = j; 
 		}
-		if(min != i)
+		if(min ! = i)
 		{
-			int tmp = p[i];
-			p[i] = p[min];
-			p[min] = tmp;
+			int tmp = p[i]; 
+			p[i] = p[min]; 
+			p[min] = tmp; 
 		}
 	}
 }
@@ -42,4 +42,5 @@ void print_array(int* p, int size)
 		printf("%d ", p[i]); 
 	printf("\n"); 
 } 
+
 
