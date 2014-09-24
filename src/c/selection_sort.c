@@ -27,7 +27,7 @@ void select_sort(int* p, int size)
 			if(p[j] < p[min])
 				min = j; 
 		}
-		if(min ! = i)
+		if(min != i)
 		{
 			int tmp = p[i]; 
 			p[i] = p[min]; 
@@ -42,5 +42,3 @@ void print_array(int* p, int size)
 		printf("%d ", p[i]); 
 	printf("\n"); 
 } 
-
-
