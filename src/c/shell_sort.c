@@ -8,6 +8,7 @@ int main()
 {
 	int a[15] = {7, 10, 5, 3, 8, 4, 2, 9, 6, 1, 12, 14, 2, 5, 15}; 
 
+	print_array(a, 15); 
 	shell_sort(a, 15); 
 	print_array(a, 15); 
 
