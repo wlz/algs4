@@ -1,16 +1,16 @@
 #include <stdio.h>
 
+int root(int *seq, int n)
+{
+    return seq[n] == n ? n:root(seq, seq[n]); 
+}
+
 void set_union(int *seq, int p, int q)
 { 
     int rp = root(seq, p); 
     int rq = root(seq, q); 
 
     seq[rp] = rq; 
-}
-
-int root(int *seq, int n)
-{
-    return seq[n] == n ? n:root(seq, seq[n]); 
 }
 
 int connected(int *seq, int p, int q)
