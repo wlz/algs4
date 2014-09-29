@@ -18,7 +18,7 @@ int main()
 	printf("%s ", pop()); 
 
 	push("be"); 
-	
+
 	printf("%s ", pop()); 
 	printf("%s ", pop()); 
 
@@ -29,7 +29,7 @@ int main()
 	printf("%s ", pop()); 
 
 	printf("\n"); 
-	push("is");
+	push("is"); 
 
 	return 0; 
 }
@@ -48,3 +48,4 @@ char* pop()
 {
 	return stack[--point]; 
 } 
+
