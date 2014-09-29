@@ -45,7 +45,7 @@ void push(char* s)
 }
 
 char* pop()
-{
+{ 
 	return stack[--point]; 
 } 
 
