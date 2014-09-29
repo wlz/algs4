@@ -9,58 +9,58 @@ char** seq;
 
 int main()
 {
-	seq = (char**)malloc(sizeof(char*)); 
+    seq = (char**)malloc(sizeof(char*)); 
 
-	push("to"); 
-	push("be"); 
-	push("or"); 
-	push("not"); 
-	push("to"); 
+    push("to"); 
+    push("be"); 
+    push("or"); 
+    push("not"); 
+    push("to"); 
 
-	printf("%s ", pop()); 
+    printf("%s ", pop()); 
 
-	push("be"); 
+    push("be"); 
 
-	printf("%s ", pop()); 
-	printf("%s ", pop()); 
+    printf("%s ", pop()); 
+    printf("%s ", pop()); 
 
-	push("that"); 
+    push("that"); 
 
-	printf("%s ", pop()); 
-	printf("%s ", pop()); 
+    printf("%s ", pop()); 
+    printf("%s ", pop()); 
 
-	push("is"); 
+    push("is"); 
 
-	printf("\n"); 
+    printf("\n"); 
 } 
 
 void push(char* s)
 { 
-	if(current == length)
-	{
-		length *= 2; 
-		resize(length); 
-	}
-	seq[current++] = s; 
+    if(current == length)
+    {
+        length *= 2; 
+        resize(length); 
+    }
+    seq[current++] = s; 
 }
 
 char* pop()
 {
-	if(current == length / 4)
-	{
-		length /= 2;
-		resize(length);
-	}
-	return seq[--current]; 
+    if(current == length / 4)
+    {
+        length /= 2;
+        resize(length);
+    }
+    return seq[--current]; 
 }
 
 void resize(int length)
 { 
-	char** np = (char**)malloc(length * sizeof(char*)); 
-	for(int i = 0; i < length / 2; i++)
-		np[i] = seq[i]; 
+    char** np = (char**)malloc(length * sizeof(char*)); 
+    for(int i = 0; i < length / 2; i++)
+        np[i] = seq[i]; 
 
-	free(seq); 
-	seq = np; 
+    free(seq); 
+    seq = np; 
 } 
 

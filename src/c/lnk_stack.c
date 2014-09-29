@@ -5,8 +5,8 @@ typedef struct Node node;
 
 struct Node
 {
-	char* str; 
-	node* last; 
+    char* str; 
+    node* last; 
 }; 
 
 void push(char* s); 
@@ -18,56 +18,56 @@ node *cur;
 
 int main()
 { 
-	first = (node*)malloc(sizeof(node)); 
-	first->last = 0; 
+    first = (node*)malloc(sizeof(node)); 
+    first->last = 0; 
 
-	cur = first; 
+    cur = first; 
 
-	push("to"); 
-	push("be"); 
-	push("or"); 
-	push("not"); 
-	push("to"); 
+    push("to"); 
+    push("be"); 
+    push("or"); 
+    push("not"); 
+    push("to"); 
 
-	printf("%s ", pop()); 
+    printf("%s ", pop()); 
 
-	push("be"); 
+    push("be"); 
 
-	printf("%s ", pop()); 
-	printf("%s ", pop()); 
+    printf("%s ", pop()); 
+    printf("%s ", pop()); 
 
-	push("that"); 
+    push("that"); 
 
-	printf("%s ", pop()); 
-	printf("%s ", pop()); 
-	printf("%s ", pop()); 
+    printf("%s ", pop()); 
+    printf("%s ", pop()); 
+    printf("%s ", pop()); 
 
-	push("is"); 
+    push("is"); 
 
-	printf("\n"); 
+    printf("\n"); 
 
-	return 0; 
+    return 0; 
 }
 
 void push(char* s) 
 {
-	node* n = (node*)malloc(sizeof(node)); 
-	n->last = cur; 
-	n->str = s; 
-	cur = n; 
+    node* n = (node*)malloc(sizeof(node)); 
+    n->last = cur; 
+    n->str = s; 
+    cur = n; 
 }
 
 char* pop()
 { 
-	char* s = cur->str; 
-	node* tmp = cur;
-	cur = cur->last; 
-	free(tmp);
+    char* s = cur->str; 
+    node* tmp = cur;
+    cur = cur->last; 
+    free(tmp);
 
-	return s; 
+    return s; 
 }
 
 int is_empty()
 { 
-	return cur->last == 0; 
+    return cur->last == 0; 
 } 

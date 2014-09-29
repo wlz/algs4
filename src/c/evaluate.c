@@ -14,55 +14,55 @@ char pop_op();
 
 int main()
 {
-	char* exp = "(1+((2+3)*(4*5)))";
+    char* exp = "(1+((2+3)*(4*5)))";
 
-	while(*(exp++) != '\0')
-	{
-		if(*exp == '(' || *exp == '\0')
-			continue;
-		else if(*exp == '+' || *exp == '*')
-			push_op(*exp);
-		else if(*exp == ')')
-		{
-			int val1 = pop_val();
-			int val2 = pop_val();
-			char op = pop_op();
-			int val;
+    while(*(exp++) != '\0')
+    {
+        if(*exp == '(' || *exp == '\0')
+            continue;
+        else if(*exp == '+' || *exp == '*')
+            push_op(*exp);
+        else if(*exp == ')')
+        {
+            int val1 = pop_val();
+            int val2 = pop_val();
+            char op = pop_op();
+            int val;
 
-			if(op == '+')
-				val = val1 + val2;
-			else if(op == '*')
-				val = val1 * val2;
+            if(op == '+')
+                val = val1 + val2;
+            else if(op == '*')
+                val = val1 * val2;
 
-			push_val(val);
-		}
-		else
-		{ 
-			int v = (int)*exp - 48;
-			push_val(v);
-		} 
-	}
+            push_val(val);
+        }
+        else
+        { 
+            int v = (int)*exp - 48;
+            push_val(v);
+        } 
+    }
 
-	printf("%d\n", pop_val()); 
-	return 0; 
+    printf("%d\n", pop_val()); 
+    return 0; 
 }
 
 void push_val(int v)
 {
-	val[loc_val++] = v;
+    val[loc_val++] = v;
 }
 
 int pop_val()
 {
-	return val[--loc_val]; 
+    return val[--loc_val]; 
 }
 
 void push_op(char o)
 {
-	op[loc_op++] = o;
+    op[loc_op++] = o;
 }
 
 char pop_op()
 {
-	return op[--loc_op]; 
+    return op[--loc_op]; 
 }
