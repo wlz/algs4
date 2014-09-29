@@ -1,14 +1,14 @@
 seq = range(10)
 
 def union(a, b):
-	seq[root(a)] = root(b)
-	print seq
+    seq[root(a)] = root(b)
+    print seq
 
 def connected(a, b): 
-	return root(a) == root(b)
+    return root(a) == root(b)
 
 def root(n):
-	return n if seq[n] == n else root(seq[n])
+    return n if seq[n] == n else root(seq[n])
 
 union(4, 3)
 union(3, 8)

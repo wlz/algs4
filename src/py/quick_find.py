@@ -2,16 +2,15 @@ cnt = 10
 seq = range(cnt) 
 
 def union(a, b):
-	aid = seq[a]
-	bid = seq[b]
-	for i in range(len(seq)):
-		if seq[i] == bid:
-			seq[i] = aid
-	print seq
-
+    aid = seq[a] 
+    bid = seq[b]
+    for i in range(len(seq)):
+        if seq[i] == bid:
+            seq[i] = aid
+    print seq 
 
 def connected(a, b):
-	return True if seq[a]==seq[b] else False
+    return True if seq[a]==seq[b] else False
 
 union(4, 3)
 union(3, 8)
@@ -27,4 +26,3 @@ union(6, 1)
 union(1, 0)
 
 print connected(0, 7) 
-
