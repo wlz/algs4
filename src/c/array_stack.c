@@ -9,43 +9,43 @@ int point = 0;
 
 int main()
 { 
-	push("to"); 
-	push("be"); 
-	push("or"); 
-	push("not"); 
-	push("to"); 
+    push("to"); 
+    push("be"); 
+    push("or"); 
+    push("not"); 
+    push("to"); 
 
-	printf("%s ", pop()); 
+    printf("%s ", pop()); 
 
-	push("be"); 
+    push("be"); 
 
-	printf("%s ", pop()); 
-	printf("%s ", pop()); 
+    printf("%s ", pop()); 
+    printf("%s ", pop()); 
 
-	push("that"); 
+    push("that"); 
 
-	printf("%s ", pop()); 
-	printf("%s ", pop()); 
-	printf("%s ", pop()); 
+    printf("%s ", pop()); 
+    printf("%s ", pop()); 
+    printf("%s ", pop()); 
 
-	printf("\n"); 
-	push("is"); 
+    printf("\n"); 
+    push("is"); 
 
-	return 0; 
+    return 0; 
 }
 
 int is_empty()
 {
-	return point == 0; 
+    return point == 0; 
 }
 
 void push(char* s)
 { 
-	stack[point++] = s; 
+    stack[point++] = s; 
 }
 
 char* pop()
 { 
-	return stack[--point]; 
+    return stack[--point]; 
 } 
 
