@@ -1,11 +1,11 @@
 public class MergeSort
 {
-	public static void main(String[] args)
-	{ 
+    public static void main(String[] args)
+    { 
         int[] seq = new int[] { 2, 4, 5, 1, 3, 6, 9, 0, 7, 8 };
         merge_sort(seq);
         print_seq(seq);
-	} 
+    } 
 
     private static void print_seq(int[] seq)
     {
