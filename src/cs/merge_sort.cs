@@ -2,12 +2,12 @@ using System;
 
 public class Program
 {
-	public static void Main()
-	{ 
+    public static void Main()
+    { 
         int[] seq = new int[] { 2, 4, 5, 1, 3, 6, 9, 0, 7, 8 }; 
         MergeSort(seq); 
         PrintSeq(seq);
-	} 
+    } 
 
     private static void PrintSeq(int[] seq)
     {
