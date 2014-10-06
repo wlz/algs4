@@ -16,7 +16,7 @@ int main()
 {
     init(); 
     printf("%d\n", select(K)); 
-	return 0;
+    return 0;
 }
 
 void init()
