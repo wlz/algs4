@@ -5,7 +5,7 @@ def insertion_sort(s):
                 swap(j, j - 1) 
 
 def swap(i, j):
-    tmp = seq[i]
+        tmp = seq[i]
         seq[i] = seq[j]
         seq[j] = tmp
 
