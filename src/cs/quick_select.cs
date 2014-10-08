@@ -4,7 +4,7 @@ public class Program
 {
     private static int[] seq = new int[10];
 
-	public static void Main()
+    public static void Main()
     { 
         Init();
         Console.WriteLine(Select(5));    
@@ -46,7 +46,7 @@ public class Program
         return j; 
     }
 
-	private static void Init()
+    private static void Init()
     {
         for(int i = 0; i < seq.Length; i++)
             seq[i] = i;
@@ -59,7 +59,7 @@ public class Program
         }
     }
 
-	private static void PrintSeq()
+    private static void PrintSeq()
     {
         for(int i = 0; i < seq.Length; i++)
             Console.Write(seq[i] + " ");    
@@ -67,7 +67,7 @@ public class Program
     }
 
 
-	private static void Swap(int p, int q)
+    private static void Swap(int p, int q)
     {
         int t = seq[p];
         seq[p] = seq[q];
