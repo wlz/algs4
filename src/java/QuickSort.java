@@ -4,12 +4,12 @@ public class QuickSort
 {
     private static int[] seq = new int[10];
 
-	public static void main(String[] args)
-	{ 
+    public static void main(String[] args)
+    { 
         init();
         quickSort();
         printSeq();
-	} 
+    } 
 
     private static void init()
     {

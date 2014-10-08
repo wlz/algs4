@@ -4,12 +4,12 @@ public class Program
 {
     static int[] seq = new int[10];
 
-	public static void Main()
-	{
+    public static void Main()
+    {
         Init();
         QuickSort();
         PrintSeq();
-	}
+    }
 
     private static void Init()
     {
