@@ -5,6 +5,7 @@ int seq[10];
 void init_seq(); 
 void print_seq(); 
 void set_union(); 
+int connected(int p, int q);
 
 int main()
 {
