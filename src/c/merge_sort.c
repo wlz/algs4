@@ -1,48 +1,53 @@
 #include <stdio.h>
-#define CNT 10
+#include <stdlib.h>
+#include <time.h>
 
-void print_seq(int* p); 
-void merge_sort(int* seq, int* aux, int lo, int hi);
-void merge(int* seq, int* aux, int lo, int mid, int hi);
-void sort(int* seq); 
+#define N 100
+
+static int seq[N];
+static int aux[N];
+
+void init();
+void swap(int p, int q);
+void print();
+void merge(int lo, int mid, int hi);
+void sort();
+void merge_sort(int lo, int hi);
 
 int main()
 {
-    int seq[CNT] = { 9, 1, 3, 5, 2, 4, 7, 6, 8, 0 }; 
+    init();
+    sort();
+    print();
 
-    sort(seq);
-    print_seq(seq);
-
-    return 0; 
+    return 0;
 }
 
-void print_seq(int* p)
+void sort()
 {
-    for(int i = 0; i < CNT; i++)
-        printf("%d ", p[i]); 
-    printf("\n"); 
+    merge_sort(0, N - 1);
 }
 
-void merge_sort(int* seq, int* aux, int lo, int hi)
+void merge_sort(int lo, int hi)
 {
-    if(hi <= lo)
+    if(lo >= hi)
         return;
+
     int mid = lo + (hi - lo) / 2;
+    merge_sort(lo, mid);
+    merge_sort(mid + 1, hi);
 
-    merge_sort(seq, aux, lo, mid);
-    merge_sort(seq, aux, mid + 1, hi);
+    merge(lo, mid, hi);
+} 
 
-    merge(seq, aux, lo, mid, hi);
-}
-
-void merge(int* seq, int* aux, int lo, int mid, int hi)
-{ 
-    for(int i = lo; i <= hi; i++)
+void merge(int lo, int mid, int hi)
+{
+    for(int i = 0; i < N; i++)
         aux[i] = seq[i];
 
     int j = lo, k = mid + 1;
     for(int i = lo; i <= hi; i++)
-    { 
+    {
         if(j > mid)
             seq[i] = aux[k++];
         else if(k > hi)
@@ -50,12 +55,32 @@ void merge(int* seq, int* aux, int lo, int mid, int hi)
         else if(aux[j] >= aux[k])
             seq[i] = aux[k++];
         else
-            seq[i] = aux[j++]; 
+            seq[i] = aux[j++];
     }
 }
 
-void sort(int* seq)
+void init()
 {
-    int aux[CNT] = { 0 }; 
-    merge_sort(seq, aux, 0, CNT - 1); 
+    for(int i = 0; i < N; i++)
+        seq[i] = i;
+    srand(time(NULL));
+    for(int i = 1; i < N; i++)
+    {
+        int rnd = rand() % i;
+        swap(i, rnd);
+    }
 }
+
+void swap(int p, int q)
+{
+    int t = seq[p];
+    seq[p] = seq[q];
+    seq[q] = t; 
+}
+
+void print()
+{
+    for(int i = 0; i < N; i++)
+        printf("%d ", seq[i]); 
+    printf("\n"); 
+} 
