@@ -1,87 +1,79 @@
 #include <stdio.h>
-#include <time.h>
 #include <stdlib.h>
+#include <time.h>
 
-#define N 100
+#define N 10
 
 static int seq[N];
 
-void shuffle(int* p);
-int partition(int* p, int lo, int hi);
-void print_seq(int* p);
-void swap(int* p, int i, int j);
-void sort(int* p);
-void quick_sort(int* p, int lo, int hi);
-
-int init()
-{
-    srand(time(NULL));
-    for(int i = 0; i < N; i++)
-        seq[i] = i; 
-    shuffle(seq);
-}
+void init();
+void swap(int, int);
+void print();
+int partition(int, int);
+void sort();
+void quick_sort(int, int);
 
 int main()
 {
-    init();
-    print_seq(seq);
+    init(); 
+    sort();
 
-    sort(seq);
-    print_seq(seq);
-
+    print();
     return 0;
 }
 
-void shuffle(int* p)
+void sort()
 {
-    for(int i = 1; i < N; i++)
-    { 
-        int ran = rand() % i;
-        swap(p, ran, i);
-    }
+    quick_sort(0, N - 1);
 }
 
-void print_seq(int* p)
+void quick_sort(int lo, int hi)
 {
-    for(int i = 0; i < N; i++)
-        printf("%d ", p[i]); 
-    printf("\n"); 
+    if(lo >= hi)
+        return;
+    int j = partition(lo, hi);
+    quick_sort(lo, j - 1);
+    quick_sort(j + 1, hi);
 }
 
-void swap(int* p, int i, int j)
+int partition(int lo, int hi)
 {
-    int t = p[i];
-    p[i] = p[j];
-    p[j] = t; 
-}
-
-int partition(int* p, int lo, int hi)
-{ 
     int i = lo, j = hi + 1;
-
     while(1)
     {
-        while(p[++i] < p[lo])
+        while(seq[++i] < seq[lo])
             if(i == hi) break;
-        while (p[lo] < p[--j])
+        while(seq[--j] > seq[lo])
             if(j == lo) break;
-
         if(i >= j) break;
-        swap(p, i, j);
+        swap(i, j);
     }
-    swap(p, lo, j);
-    return j;
+    swap(lo, j);
+    return j; 
 }
 
-void sort(int* p)
+void init()
 {
-    quick_sort(p, 0, N - 1); 
+    for(int i = 0; i < N; i++)
+        seq[i] = i;
+    srand(time(NULL));
+    for(int i = 1; i < N; i++)
+    {
+        int r = rand() % i;
+        swap(i, r);
+    }
 }
 
-void quick_sort(int* p, int lo, int hi)
+void swap(int p, int q)
 {
-    if(hi <= lo) return;
-    int j = partition(p, lo, hi);
-    quick_sort(p, lo, j - 1);
-    quick_sort(p, j + 1, hi); 
+    int t = seq[p];
+    seq[p] = seq[q];
+    seq[q] = t;
+}
+
+void print()
+{
+    for(int i = 0; i < N; i++)
+        printf("%d ", seq[i]); 
+    printf("\n"); 
 }
