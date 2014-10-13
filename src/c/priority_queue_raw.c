@@ -13,7 +13,7 @@ void swap(int* seq, int p, int q);
 void print();
 
 void insert(int key);
-int del_max();
+int del_min();
 int size();
 int is_empty();
 
@@ -33,7 +33,7 @@ void select_largest_m(int m)
     {
         insert(seq[i]);
         if(size() > m)
-            del_max();
+            del_min();
     }
 
     for(int i = 0; i < m; i++)
@@ -50,13 +50,13 @@ void insert(int key)
     pq[cnt++] = key;
 }
 
-int del_max()
+int del_min()
 { 
-    int max = 0;
+    int min = 0;
     for(int i = 0; i < cnt; i++)
-        if(pq[i] < pq[max]) max = i;
+        if(pq[i] < pq[min]) min = i;
 
-    swap(pq, max, cnt - 1);
+    swap(pq, min, cnt - 1);
     pq[cnt - 1] = 0;
     
     return pq[cnt--];
