@@ -7,7 +7,7 @@
 static int seq[N];
 static int pq[N];
 
-int cnt = 0;
+static int cnt = 0;
 
 void init();
 void swap(int* seq, int p, int q);
@@ -24,7 +24,7 @@ void select_smallest_m(int m);
 int main()
 {
     init();
-    select_smallest_m(20);
+    select_smallest_m(10);
 
     return 0;
 }
@@ -38,7 +38,7 @@ void select_smallest_m(int m)
             del_max();
     }
 
-    for(int i = 0; i < m; i++)
+    for(int i = 1; i <= m; i++)
         printf("%d ", pq[i]); 
     printf("\n"); 
 }
