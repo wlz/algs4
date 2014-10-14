@@ -2,12 +2,12 @@ using System;
 
 public class Program
 {
-	public static void Main()
-	{ 
+    public static void Main()
+    { 
         int[] seq = GenData(10);
         HeapSort(seq);
         Print(seq);
-	}
+    }
 
     private static void HeapSort(int[] seq)
     { 
@@ -64,4 +64,3 @@ public class Program
         Console.WriteLine();
     }
 }
-
