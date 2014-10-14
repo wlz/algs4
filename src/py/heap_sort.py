@@ -1,9 +1,7 @@
 from random import randrange
 
 def gen_data():
-    seq = []
-    for i in range(10):
-        seq.append(i)
+    seq = range(10)
     for i in range(1, 10):
         r = randrange(i)
         seq[i], seq[r] = seq[r], seq[i]
