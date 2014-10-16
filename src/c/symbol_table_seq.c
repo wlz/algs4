@@ -65,19 +65,19 @@ char* get(int key)
 
 void put(int key, char *value)
 { 
-    if(!contains(key))
+    for(int i = 0; i < count; i++)
     {
-        symbol *s = malloc(sizeof(symbol));
-        s->key = key;
-        s->value = value;
-        st[count++] = s;
+        if(st[i]->key == key)
+        {
+            st[i]->value = value;
+            return;
+        }
     }
-    else
-    {
-        for(int i = 0; i < count; i++)
-            if(st[i]->key == key)
-                st[i]->value = value;
-    }
+
+    symbol *s = malloc(sizeof(symbol));
+    s->key = key;
+    s->value = value;
+    st[count++] = s;
 }
 
 int contains(int key)
