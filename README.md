@@ -1,10 +1,10 @@
 algs4
 =====
 
-Implement algorithms in coursra course algs4 in different programming languages .
+Implement algorithms in course algs4 in different programming languages .
 
-1. c
+1. C
 2. Python
-3. c sharp
+3. C#
 4. Java
 5. Scheme 
