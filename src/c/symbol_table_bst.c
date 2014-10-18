@@ -22,7 +22,7 @@ int is_empty();
 int size();
 char* max_value();
 char* min_value();
-int floor(int key);
+int board(int key);
 int ceiling(int key);
 int rank(int key);
 
@@ -35,7 +35,7 @@ int contains_node(node* n, int key);
 int size_node(node* n);
 char* max_value_node(node* n);
 char* min_value_node(node* n);
-node* floor_node(node* n, int key);
+node* board_node(node* n, int key);
 node* ceiling_node(node* n, int key);
 int rank_node(node* n, int key);
 
@@ -59,8 +59,8 @@ int main()
     printf("%s\n", max_value()); 
     printf("%s\n", min_value()); 
 
-    printf("%d\n", floor(5)); 
-    printf("%d\n", floor(6)); 
+    printf("%d\n", board(5)); 
+    printf("%d\n", board(6)); 
 
     printf("%d\n", ceiling(5)); 
     printf("%d\n", ceiling(6)); 
@@ -85,22 +85,22 @@ int rank_node(node* n, int key)
     else return size_node(n->left);
 } 
 
-int floor(int key)
+int board(int key)
 {
-    node* n = floor_node(root, key);
+    node* n = board_node(root, key);
     if(!n) return -1; 
     else return n->key; 
 }
 
-node* floor_node(node* n, int key)
+node* board_node(node* n, int key)
 { 
     if(!n) return NULL;
 
     if(key == n->key) return n;
-    else if(key < n->key) return floor_node(n->left, key); 
+    else if(key < n->key) return board_node(n->left, key); 
     else
     {
-        node* np = floor_node(n->right, key);
+        node* np = board_node(n->right, key);
         if(!np) return n;
         else return np;
     }
