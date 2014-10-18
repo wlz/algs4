@@ -4,9 +4,10 @@
 struct node
 {
     int key;
-    char* value;
+    char *value;
     struct node *left;
     struct node *right;
+    int count;
 };
 
 typedef struct node node;
@@ -44,13 +45,14 @@ int main()
     put(2, "222");
     put(4, "mmm");
     put(6, "nnn");
+    put(5, "hhh");
 
     printf("%s\n", get(2));
     printf("%d\n", contains(1));
     printf("%d\n", contains(5));
 
-    printf("%d\n", is_empty());
-    printf("%d\n", size()); 
+    printf("is_empty: %d\n", is_empty());
+    printf("size = %d\n", size()); 
 
     printf("%s\n", max_value()); 
     printf("%s\n", min_value()); 
@@ -139,7 +141,7 @@ int size()
 int size_node(node* n)
 { 
     if(n == NULL) return 0;
-    else return 1 + size_node(n->left) + size_node(n->right);
+    else return n->count;
 }
 
 int is_empty()
@@ -184,7 +186,6 @@ char* get(int key)
 char* get_node(node* n, int key)
 {
     if(!n) return NULL;
-
     if(key == n->key) return n->value;
     else if(key > n->key) return get_node(n->right, key);
     else return get_node(n->left, key); 
@@ -197,11 +198,11 @@ void put(int key, char* value)
 
 node* put_node(node* n, int key, char* value)
 {
-    if(!n)  
-        return create_node(key, value);
+    if(!n) return create_node(key, value);
     else if(key > n->key) n->right = put_node(n->right, key, value);
     else if(key < n->key) n->left = put_node(n->left, key, value);
     else n->value = value;
+    n->count = 1 + size_node(n->left) + size_node(n->right);
 
     return n;
 }
@@ -213,6 +214,7 @@ node* create_node(int key, char* value)
     n->value = value;
     n->left = NULL;
     n->right = NULL;
+    n->count = 0;
 
     return n;
 }
