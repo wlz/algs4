@@ -19,16 +19,35 @@ char* get(int key);
 node* create_node(int key, char* value);
 node* put_node(node* n, int key, char* value);
 char* get_node(node* n, int key);
+void print();
+void print_node(node* n);
 
 int main()
 {
     put(1, "aaa");
     put(3, "bbb");
     put(2, "ccc");
+    put(2, "222");
+    put(4, "mmm");
 
-    printf("%s\n", get(3));
-
+    print();
     return 0;
+}
+
+void print()
+{ 
+    print_node(root);
+}
+
+void print_node(node* n)
+{
+    if(!n) return;
+    else
+    {
+        printf("key: %d, value: %s\n", n->key, n->value);
+        print_node(n->left);
+        print_node(n->right);
+    }
 }
 
 char* get(int key)
