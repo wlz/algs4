@@ -19,10 +19,8 @@ void delete(int key);
 int contains(int key);
 int is_empty();
 int size();
-char* max();
-char* min();
-int floor(int key);
-int ceiling(int key);
+char* max_value();
+char* min_value();
 
 node* create_node(int key, char* value);
 node* put_node(node* n, int key, char* value);
@@ -31,6 +29,8 @@ void print();
 void print_node(node* n);
 int contains_node(node* n, int key);
 int size_node(node* n);
+char* max_value_node(node* n);
+char* min_value_node(node* n);
 
 int main()
 {
@@ -48,35 +48,35 @@ int main()
     printf("%d\n", is_empty());
     printf("%d\n", size()); 
 
-    printf("%s\n", max()); 
-    printf("%s\n", min()); 
+    printf("%s\n", max_value()); 
+    printf("%s\n", min_value()); 
 
     print();
     return 0;
 }
 
-char* max()
+char* max_value()
 {
-    return max_node(root);
+    return max_value_node(root);
 }
 
-char* max_node(node* n)
-{
+char* max_value_node(node* n)
+{ 
     if(!n) return NULL;
     if(!n->right) return n->value;
-    else return max_node(n->right);
+    else return max_value_node(n->right);
 }
 
-char* min()
+char* min_value()
 {
-    return min_node(root);
+    return min_value_node(root);
 }
 
-char* min_node(node* n)
-{
+char* min_value_node(node* n)
+{ 
     if(!n) return NULL;
     if(!n->left) return n->value;
-    else return min_node(n->left);
+    else return min_value_node(n->left);
 }
 
 int size()
@@ -97,7 +97,7 @@ int is_empty()
 
 int contains(int key)
 {
-    contains_node(root, key);
+    return contains_node(root, key);
 }
 
 int contains_node(node* n, int key)
@@ -159,6 +159,8 @@ node* create_node(int key, char* value)
     node* n = malloc(sizeof(node));
     n->key = key;
     n->value = value;
+    n->left = NULL;
+    n->right = NULL;
 
     return n;
 }
