@@ -6,153 +6,129 @@
 typedef struct
 {
     int key;
-    char *value; 
+    char* value;
 } symbol;
 
 static symbol *st[N];
-static int count = 0;
+static int count = 0; 
 
 void put(int key, char* value);
-char* get(int key);
-int size();
+char* get(int key); 
 void delete(int key);
 int contains(int key);
-void print();
+int is_empty();
+int size();
 
+void print();
+int position(int key, int *ceiling);
+void shift(int k, symbol* s);
 symbol* create_symbol(int key, char* value);
 
 int main()
 {
     put(1, "a");
     put(2, "b");
-    put(5, "e");
-    put(4, "d");
-    put(3, "c");
+    put(5, "b");
+    put(3, "b");
+    put(0, "b");
+    put(2, "c");
 
     print();
 
-    printf("%s\n", get(3));
-
-    printf("%d\n", contains(0));
-    printf("%d\n", contains(1));
-    printf("%d\n", contains(5));
-    printf("%d\n", contains(6));
-
-    delete(3);
     delete(1);
 
     print();
 
     return 0;
-} 
+}
 
-void delete(int key)
+int is_empty()
 {
-    if(key > st[count - 1]->key || key < st[0]->key)
-        return;
+    return count == 0;
+}
 
-    int lo = 0, hi = count - 1, mid = lo + (hi - lo) / 2;
-    while(lo <= hi)
-    {
-        if(key == st[mid]->key)
-        {
-            count--;
-            for(int i = mid; i < count; i++)
-                st[i] = st[i + 1];
-            st[count] = NULL;
-            return;
-        }
-        else if(key > st[mid]->key) lo = mid + 1;
-        else hi = mid - 1;
-
-        mid = lo + (hi - lo) / 2;
-    }
+int size()
+{
+    return count;
 }
 
 int contains(int key)
 {
-    if(key > st[count - 1]->key || key < st[0]->key)
-        return 0;
+    int c;
+    return position(key, &c) != -1; 
+}
 
-    int lo = 0, hi = count - 1, mid = lo + (hi - lo) / 2;
-    while(lo <= hi)
+char* get(int key)
+{ 
+    int p, c;
+    p = position(key, &c);
+    if(p != -1)
+        return st[p]->value;
+
+    return NULL;
+}
+
+void delete(int key)
+{
+    int p, c;
+    p = position(key, &c);
+    if(p != -1)
     {
-        if(key == st[mid]->key) return 1;
-        else if(key > st[mid]->key) lo = mid + 1;
-        else hi = mid - 1;
-
-        mid = lo + (hi - lo) / 2; 
+        free(st[p]);
+        count--;
+        for(int i = p; i < count; i++)
+            st[i] = st[i + 1];
     }
-
-    return 0;
 }
 
 void print()
 {
     for(int i = 0; i < count; i++)
-        printf("key:%d , value:%s\n", st[i]->key, st[i]->value);
+        printf("index: %d, key: %d, value: %s\n", i, st[i]->key, st[i]->value);
     printf("\n");
 }
 
-char* get(int key)
-{ 
-    if(key > st[count - 1]->key || key < st[0]->key)
-        return NULL;
+void put(int key, char* value)
+{
+    if(count == 0 || key > st[count - 1]->key)
+        st[count++] = create_symbol(key, value);
+    else if(key < st[0]->key)
+        shift(0, create_symbol(key, value));
+    else
+    {
+        int p, c;
+        p = position(key, &c);
+        if(p != -1) st[p]->value = value;
+        else shift(c, create_symbol(key, value));
+    }
+}
 
+int position(int key, int *ceiling)
+{
     int lo = 0, hi = count - 1, mid = lo + (hi - lo) / 2;
     while(lo <= hi)
     {
-        if(key == st[mid]->key) return st[mid]->value;
+        if(st[mid]->key == key)
+        {
+            *ceiling = -1;
+            return mid;
+        }
         else if(key > st[mid]->key) lo = mid + 1;
         else hi = mid - 1;
 
         mid = lo + (hi - lo) / 2; 
     }
 
-    return NULL;
+    *ceiling = mid;
+    return -1;
 }
 
-void put(int key, char* value)
-{ 
-    if(count == 0)
-    {
-        st[count++] = create_symbol(key, value);
-        return;
-    }
-
-    if(key > st[count - 1]->key) 
-    {
-        st[count++] = create_symbol(key, value);
-        return;
-    } 
-
-    if(key < st[0]->key)
-    {
-        count++;
-        for(int i = count - 1; i > 0; i--)
-            st[i] = st[i - 1];
-        st[0] = create_symbol(key, value);
-        return;
-    } 
-
-    int lo = 0, hi = count - 1, mid = lo + (hi - lo) / 2;
-    while(lo <= hi)
-    { 
-        if(key == st[mid]->key)
-        {
-            st[mid]->value = value;
-            return;
-        }
-        else if(key > st[mid]->key) lo = mid + 1;
-        else hi = mid - 1;
-
-        mid = lo + (hi - lo) / 2;
-    }
-
+void shift(int k, symbol *s)
+{
     count++;
-    for(int i = count - 1; i > mid; i--)
+    for(int i = count - 1; i > k; i--)
         st[i] = st[i - 1];
-    st[mid] = create_symbol(key, value);
+    st[k] = s;
 }
 
 symbol* create_symbol(int key, char* value)
@@ -161,10 +137,5 @@ symbol* create_symbol(int key, char* value)
     s->key = key;
     s->value = value;
 
-    return s; 
-}
-
-int size()
-{
-    return count;
+    return s;
 }
