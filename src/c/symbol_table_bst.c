@@ -21,6 +21,8 @@ int is_empty();
 int size();
 char* max_value();
 char* min_value();
+int floor(int key);
+int ceiling(int key);
 
 node* create_node(int key, char* value);
 node* put_node(node* n, int key, char* value);
@@ -31,6 +33,8 @@ int contains_node(node* n, int key);
 int size_node(node* n);
 char* max_value_node(node* n);
 char* min_value_node(node* n);
+node* floor_node(node* n, int key);
+node* ceiling_node(node* n, int key);
 
 int main()
 {
@@ -39,7 +43,7 @@ int main()
     put(2, "ccc");
     put(2, "222");
     put(4, "mmm");
-    put(5, "nnn");
+    put(6, "nnn");
 
     printf("%s\n", get(2));
     printf("%d\n", contains(1));
@@ -51,8 +55,56 @@ int main()
     printf("%s\n", max_value()); 
     printf("%s\n", min_value()); 
 
+    printf("%d\n", floor(5)); 
+    printf("%d\n", floor(6)); 
+
+    printf("%d\n", ceiling(5)); 
+    printf("%d\n", ceiling(6)); 
+
     print();
     return 0;
+}
+
+int floor(int key)
+{
+    node* n = floor_node(root, key);
+    if(!n) return -1; 
+    else return n->key; 
+}
+
+node* floor_node(node* n, int key)
+{ 
+    if(!n) return NULL;
+
+    if(key == n->key) return n;
+    else if(key < n->key) return floor_node(n->left, key); 
+    else
+    {
+        node* np = floor_node(n->right, key);
+        if(!np) return n;
+        else return np;
+    }
+} 
+
+int ceiling(int key)
+{
+    node *n = ceiling_node(root, key);
+    if(!n) return -1;
+    else return n->key;
+}
+
+node* ceiling_node(node* n, int key)
+{ 
+    if(!n) return NULL;
+
+    if(key == n->key) return n;
+    else if(key > n->key) return ceiling_node(n->right, key);
+    else
+    {
+        node* np = ceiling_node(n->left, key);
+        if(!np) return n;
+        else return np;
+    }
 }
 
 char* max_value()
