@@ -120,7 +120,7 @@ node* del_min_node(node* n)
 { 
     if(!n->left) 
     {
-        free(n->left);
+        free(n);
         return n->right;
     }
 
