@@ -25,6 +25,7 @@ char* min_value();
 int board(int key);
 int ceiling(int key);
 int rank(int key);
+void del_min();
 
 node* create_node(int key, char* value);
 node* put_node(node* n, int key, char* value);
@@ -38,6 +39,7 @@ char* min_value_node(node* n);
 node* board_node(node* n, int key);
 node* ceiling_node(node* n, int key);
 int rank_node(node* n, int key);
+node* del_min_node(node* n);
 
 int main()
 {
@@ -69,7 +71,27 @@ int main()
     printf("%d\n", rank(3)); 
 
     print();
+
+    printf("--------\n");
+    del_min();
+
+    print();
+
     return 0;
+}
+
+void del_min()
+{ 
+    root = del_min_node(root);
+}
+
+node* del_min_node(node* n)
+{ 
+    if(!n->left) return n->right;
+    n->left = del_min_node(n->left);
+    n->count = 1 + size_node(n->left) + size_node(n->right);
+
+    return n;
 }
 
 int rank(int key)
@@ -190,7 +212,7 @@ void print_node(node* n)
     if(!n) return;
     else
     {
-        printf("key: %d, value: %s\n", n->key, n->value);
+        printf("key: %d, value: %s, count: %d\n", n->key, n->value, n->count);
         print_node(n->left);
         print_node(n->right);
     }
