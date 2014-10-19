@@ -20,8 +20,8 @@ void delete(int key);
 int contains(int key);
 int is_empty();
 int size();
-char* max_value();
-char* min_value();
+node* max_value();
+node* min_value();
 int board(int key);
 int ceiling(int key);
 int rank(int key);
@@ -34,12 +34,13 @@ void print();
 void print_node(node* n);
 int contains_node(node* n, int key);
 int size_node(node* n);
-char* max_value_node(node* n);
-char* min_value_node(node* n);
+node* max_value_node(node* n);
+node* min_value_node(node* n);
 node* board_node(node* n, int key);
 node* ceiling_node(node* n, int key);
 int rank_node(node* n, int key);
 node* del_min_node(node* n);
+node* delete_node(node* n, int key);
 
 int main()
 {
@@ -58,8 +59,8 @@ int main()
     printf("is_empty: %d\n", is_empty());
     printf("size = %d\n", size()); 
 
-    printf("%s\n", max_value()); 
-    printf("%s\n", min_value()); 
+    printf("%s\n", max_value()->value); 
+    printf("%s\n", min_value()->value); 
 
     printf("%d\n", board(5)); 
     printf("%d\n", board(6)); 
@@ -72,12 +73,36 @@ int main()
 
     print();
 
-    printf("--------\n");
-    del_min();
-
+    del_min(); 
     print();
 
+    delete(5); 
+    print(); 
+
     return 0;
+}
+
+void delete(int key)
+{ 
+    root = delete_node(root, key);
+}
+
+node* delete_node(node* n, int key)
+{ 
+    if(!n) return NULL;
+    if(key > n->key) n->right = delete_node(n->right, key);
+    else if(key < n->key) n->left = delete_node(n->left, key);
+    else
+    {
+        if(!n->right) return n->left;
+        if(!n->left) return n->right;
+
+        struct node* t = n;
+        n = min_value_node(t->right);
+        n->right = del_min_node(t->right);
+        n->left = t->left; 
+    }
+    return n;
 }
 
 void del_min()
@@ -87,7 +112,12 @@ void del_min()
 
 node* del_min_node(node* n)
 { 
-    if(!n->left) return n->right;
+    if(!n->left) 
+    {
+        free(n->left);
+        return n->right;
+    }
+
     n->left = del_min_node(n->left);
     n->count = 1 + size_node(n->left) + size_node(n->right);
 
@@ -149,27 +179,27 @@ node* ceiling_node(node* n, int key)
     }
 }
 
-char* max_value()
+node* max_value()
 {
     return max_value_node(root);
 }
 
-char* max_value_node(node* n)
+node* max_value_node(node* n)
 { 
     if(!n) return NULL;
-    if(!n->right) return n->value;
+    if(!n->right) return n;
     else return max_value_node(n->right);
 }
 
-char* min_value()
+node* min_value()
 {
     return min_value_node(root);
 }
 
-char* min_value_node(node* n)
+node* min_value_node(node* n)
 { 
     if(!n) return NULL;
-    if(!n->left) return n->value;
+    if(!n->left) return n;
     else return min_value_node(n->left);
 }
 
@@ -205,6 +235,7 @@ int contains_node(node* n, int key)
 void print()
 { 
     print_node(root);
+    printf("-------------\n");
 }
 
 void print_node(node* n)
