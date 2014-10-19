@@ -72,12 +72,16 @@ int main()
     printf("%d\n", rank(3)); 
 
     print();
+    printf("size = %d\n", size()); 
 
     del_min(); 
+    print(); 
+    printf("size = %d\n", size()); 
     print();
 
     delete(5); 
     print(); 
+    printf("size = %d\n", size()); 
 
     return 0;
 }
@@ -102,6 +106,8 @@ node* delete_node(node* n, int key)
         n->right = del_min_node(t->right);
         n->left = t->left; 
     }
+    n->count = size_node(n->left) + size_node(n->right) + 1;
+
     return n;
 }
 
@@ -273,6 +279,7 @@ node* put_node(node* n, int key, char* value)
     else if(key > n->key) n->right = put_node(n->right, key, value);
     else if(key < n->key) n->left = put_node(n->left, key, value);
     else n->value = value;
+
     n->count = 1 + size_node(n->left) + size_node(n->right);
 
     return n;
@@ -285,7 +292,7 @@ node* create_node(int key, char* value)
     n->value = value;
     n->left = NULL;
     n->right = NULL;
-    n->count = 0;
+    n->count = 1;
 
     return n;
 }
