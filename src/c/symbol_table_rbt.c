@@ -13,6 +13,7 @@ struct node
 typedef struct node node;
 
 void put(char value);
+node* rotate_left(node* n);
 
 int is_red(node* n);
 node* node_init(char value); 
@@ -24,6 +25,18 @@ int main()
     printf("key: %d, value: %c, is_red: %d\n", n->key, n->value, n->color);
     return 0;
 } 
+
+node* rotate_left(node* h)
+{
+    node* x = h->right;
+
+    h->right = x->left;
+    x->left = h;
+    x->color = h->color;
+    h->color = 1;
+    
+    return x;
+}
 
 int is_red(node* n)
 { 
