@@ -97,23 +97,19 @@ node* delete_node(node* n, int key)
     else if(key < n->key) n->left = delete_node(n->left, key);
     else
     {
-        if(!n->right)
+        node *t;
+        if(!n->right || !n->left)
         {
-            node *t = n->left;
+            t = !n->left ? n->right : n->left;
             free(n);
             return t;
         }
-        if(!n->left)
-        {
-            node *t = n->right;
-            free(n);
-            return t;
-        }
-
-        struct node* t = n;
+        t = n;
         n = min_value_node(t->right);
         n->right = del_min_node(t->right);
-        n->left = t->left; 
+        n->left = t->left;
+
+        free(t);
     }
     n->count = size_node(n->left) + size_node(n->right) + 1;
 
