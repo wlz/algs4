@@ -98,8 +98,18 @@ node* delete_node(node* n, int key)
     else if(key < n->key) n->left = delete_node(n->left, key);
     else
     {
-        if(!n->right) return n->left;
-        if(!n->left) return n->right;
+        if(!n->right)
+        {
+            node *t = n->left;
+            free(n);
+            return t;
+        }
+        if(!n->left)
+        {
+            node *t = n->right;
+            free(n);
+            return t;
+        }
 
         struct node* t = n;
         n = min_value_node(t->right);
@@ -120,8 +130,9 @@ node* del_min_node(node* n)
 { 
     if(!n->left) 
     {
+        node *t = n->right;
         free(n);
-        return n->right;
+        return t;
     }
 
     n->left = del_min_node(n->left);
