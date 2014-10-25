@@ -5,8 +5,7 @@ struct node
 {
     int key;
     char *value;
-    struct node *left;
-    struct node *right;
+    struct node *left, *right;
     int count;
 };
 
