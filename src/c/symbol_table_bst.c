@@ -40,6 +40,11 @@ node* ceiling_node(node* n, int key);
 int rank_node(node* n, int key);
 node* del_min_node(node* n);
 node* delete_node(node* n, int key);
+void display();
+node* get_node_path(char *path);
+int length(char *path);
+void swap(char *pc, int p, int q);
+char* get_path(int order);
 
 int main()
 {
@@ -82,7 +87,88 @@ int main()
     print(); 
     printf("size = %d\n", size()); 
 
+    display();
+
     return 0;
+}
+
+void display()
+{
+    int layer = 0;
+    for(int i = 0; i < 30; i++)
+    {
+        char *p = get_path(i);
+        int len = length(p);
+        if(len > layer)
+        {
+            layer = len;
+            printf("\n");
+        }
+
+        node *t = get_node_path(p);
+        if(!t) printf("      ");
+        else printf("(%d:%s) ", t->key, t->value);
+    }
+}
+
+node* get_node_path(char *path)
+{ 
+    int len = length(path);
+
+    node *t = root;
+    for(int i = 0; i < len; i++)
+    { 
+        if(path[i] == '0')
+        {
+            if(!t->left) return NULL;
+            t = t->left;
+        }
+        else if(path[i] == '1')
+        {
+            if(!t->right) return NULL;
+            t = t->right;
+        }
+    }
+
+    return t;
+}
+
+int length(char *path)
+{
+    int i;
+    for(i = 0; path[i] != '\0'; ++i);
+
+    return i;
+}
+
+char* get_path(int order)
+{ 
+    char *path = malloc(sizeof(char) * 10); 
+
+    int i = 0;
+    while(order > 0)
+    {
+        path[i] = ((order - 1) % 2 == 1) ? '1' : '0';
+        order = (order - 1) / 2; 
+        i++;
+    }
+    path[i] = '\0';
+
+    int j = i - 1;
+    while(j > (i - 1) / 2)
+    {
+        swap(path, j, (i - 1) - j);
+        j--;
+    } 
+
+    return path;
+}
+
+void swap(char *pc, int p, int q)
+{
+    char t = pc[p];
+    pc[p] = pc[q];
+    pc[q] = t;
 }
 
 void delete(int key)
