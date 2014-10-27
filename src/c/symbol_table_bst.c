@@ -49,6 +49,8 @@ void swap(char *pc, int p, int q);
 char* get_path(int order);
 int depth_node(node *n);
 int get_leafs();
+void move(int n);
+int get_location(char *path);
 
 int main()
 {
@@ -96,6 +98,28 @@ int main()
     return 0;
 }
 
+void move(int n)
+{ 
+    for(int i = 0; i < n; i++)
+        printf(" "); 
+}
+
+int get_location(char *path)
+{
+    int loc = 35;
+    int sw[4] = {13, 6, 2, 1}; 
+
+    int len = length(path);
+    for(int i = 0; i < len; i++)
+    {
+        int os = i > 3 ? 1 : sw[i];
+        if(path[i] == '0') loc -= os;
+        else if(path[i] == '1') loc += os;
+    } 
+
+    return loc;
+}
+
 int depth()
 {
     return depth_node(root);
@@ -120,24 +144,30 @@ int depth_node(node *n)
 
 void display()
 {
+    int cnt = get_leafs() - 1;
     int layer = 0;
-    int leafs = get_leafs();
-    for(int i = 0; i < 30; i++)
+    int cur = 0;
+    for(int i = 0; i < cnt; i++)
     {
-        char *p = get_path(i);
-        int len = length(p);
-        if(len > layer)
+        char *path = get_path(i); 
+        if(length(path) > layer)
         {
-            layer = len;
-            printf("\n");
+            layer++;
+            printf("\n"); 
+            cur = 0; 
         }
 
-        node *t = get_node_path(p);
-        free(p);
+        int loc = get_location(path);
+        move(loc - cur);
+        cur = loc;
 
-        if(!t) printf("      ");
-        else printf("(%d:%s) ", t->key, t->value);
+        node *n = get_node_path(path);
+        if(!n) printf("  "); 
+        else printf("%d", n->key); 
+
+        cur = loc + 2;
     }
+    printf("\n"); 
 }
 
 int get_leafs()
