@@ -26,6 +26,7 @@ int board(int key);
 int ceiling(int key);
 int rank(int key);
 void del_min();
+int depth();
 
 node* create_node(int key, char* value);
 node* put_node(node* n, int key, char* value);
@@ -46,6 +47,8 @@ node* get_node_path(char *path);
 int length(char *path);
 void swap(char *pc, int p, int q);
 char* get_path(int order);
+int depth_node(node *n);
+int get_leafs();
 
 int main()
 {
@@ -93,9 +96,32 @@ int main()
     return 0;
 }
 
+int depth()
+{
+    return depth_node(root);
+}
+
+int depth_node(node *n)
+{
+    if(!n) return 0;
+    else if(!n->left && !n->right) return 1;
+    else
+    {
+        int dl, dr, max;
+
+        dl = depth_node(n->left);
+        dr = depth_node(n->right);
+
+        max = dl > dr ? dl : dr;
+
+        return 1 + max;
+    }
+} 
+
 void display()
 {
     int layer = 0;
+    int leafs = get_leafs();
     for(int i = 0; i < 30; i++)
     {
         char *p = get_path(i);
@@ -112,6 +138,16 @@ void display()
         if(!t) printf("      ");
         else printf("(%d:%s) ", t->key, t->value);
     }
+}
+
+int get_leafs()
+{
+    int d = depth();
+    int s = 1;
+    for(int i = 0; i < d; i++)
+        s *= 2;
+
+    return s;
 }
 
 node* get_node_path(char *path)
