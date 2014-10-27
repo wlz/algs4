@@ -5,7 +5,8 @@ struct node
 {
     int key;
     char *value;
-    struct node *left, *right;
+    struct node *left;
+    struct node *right;
     int count;
 };
 
@@ -106,6 +107,8 @@ void display()
         }
 
         node *t = get_node_path(p);
+        free(p);
+
         if(!t) printf("      ");
         else printf("(%d:%s) ", t->key, t->value);
     }
