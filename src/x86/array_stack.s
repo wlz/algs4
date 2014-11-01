@@ -80,12 +80,6 @@ pop:
     leave
     ret
 
-add_stack:
-    movl    stack_size, %eax 
-    incl    %eax 
-    movl    %eax, stack_size
-    ret
-
 is_empty:
     movl    $0, %eax 
     movl    stack_size, %ebx 
