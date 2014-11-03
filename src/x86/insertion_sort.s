@@ -6,9 +6,11 @@ seq:
 	.long	4
 	.long	9
 	.long   6	
+	.long   7	
+	.long   3	
+	.long   5	
 size:
-    .long   6
-#    .long   5
+    .long   8
 
 fmt:
     .string "%d "
@@ -33,10 +35,11 @@ insertion_sort:
     subl    $16, %esp 
 
     movl    $0, %edi 
-L1:
+outer_loop:
     movl    %edi, %esi
     addl    $1, %esi 
-L2: 
+
+inner_loop: 
     movl    %esi, %eax 
     movl    %esi, %ebx 
     subl    $1, %ebx 
@@ -47,39 +50,42 @@ L2:
     cmpl    %ecx, %edx 
     jl      done
 
-    subl    $16, %esp
     movl    %eax, (%esp)
     movl    %ebx, 4(%esp)
-    call    swap
-    addl    $16, %esp 
 
-done:
+    call    swap
+
+done: 
+#    call    tick
     subl    $1, %esi
     cmpl    $0, %esi
-    jg      L2
+    jg      inner_loop
+    
+#    call    println
     
     addl    $1, %edi 
     cmpl    %edi, (size)
-    jg      L1 
+    jg      outer_loop
 
     leave
     ret
 
 swap:
-    pushl   %ebp
-    movl    %esp, %ebp
-    
-    movl    8(%ebp), %edi 
-    movl    12(%ebp), %esi 
-    
-    movl    seq(, %edi, 4), %eax 
-    movl    seq(, %esi, 4), %ebx 
-
-    movl    %eax, seq(, %esi, 4)
-    movl    %ebx, seq(, %edi, 4)
-    
-    leave
-    ret
+	pushl	%ebp
+	movl	%esp, %ebp
+	subl	$16, %esp
+	movl	8(%ebp), %eax
+	movl	seq(,%eax,4), %eax
+	movl	%eax, -4(%ebp)
+	movl	12(%ebp), %eax
+	movl	seq(,%eax,4), %edx
+	movl	8(%ebp), %eax
+	movl	%edx, seq(,%eax,4)
+	movl	12(%ebp), %eax
+	movl	-4(%ebp), %edx
+	movl	%edx, seq(,%eax,4)
+	leave
+	ret
     
 println:
     pushl   %ebp
@@ -91,20 +97,12 @@ println:
     leave
     ret
 
-#insertion_sort:
-#    pushl   %ebp
-#    movl    %esp, %ebp 
-#
-#    leave 
-#    ret
-
 display:
     pushl   %ebp 
     movl    %esp, %ebp 
     subl    $16, %esp 
 
     movl    $fmt, (%esp) 
-    movl    size, %edi 
     movl    $0, %ebx 
 
 print:
@@ -113,7 +111,7 @@ print:
     call    printf
     
     addl    $1, %ebx 
-    cmpl    %edi, %ebx 
+    cmpl    size, %ebx 
 
     jl      print 
 
