@@ -15,7 +15,7 @@ size:
 fmt:
     .string "%d "
 newline:
-    .string "\n-----------"
+    .string "\n---------------"
 
 .globl main
 main:
@@ -23,6 +23,9 @@ main:
     movl    %esp, %ebp 
     andl    $-16, %esp 
     
+    call    display
+    call    println
+
     call    insertion_sort 
     call    display
 
@@ -56,12 +59,9 @@ inner_loop:
     call    swap
 
 done: 
-#    call    tick
     subl    $1, %esi
     cmpl    $0, %esi
     jg      inner_loop
-    
-#    call    println
     
     addl    $1, %edi 
     cmpl    %edi, (size)
@@ -70,22 +70,21 @@ done:
     leave
     ret
 
-swap:
-	pushl	%ebp
-	movl	%esp, %ebp
-	subl	$16, %esp
-	movl	8(%ebp), %eax
-	movl	seq(,%eax,4), %eax
-	movl	%eax, -4(%ebp)
-	movl	12(%ebp), %eax
-	movl	seq(,%eax,4), %edx
-	movl	8(%ebp), %eax
-	movl	%edx, seq(,%eax,4)
-	movl	12(%ebp), %eax
-	movl	-4(%ebp), %edx
-	movl	%edx, seq(,%eax,4)
-	leave
-	ret
+swap: 
+    pushl   %ebp
+    movl    %esp, %ebp 
+    
+    movl    8(%ebp), %eax 
+    movl    12(%ebp), %ebx 
+    
+    movl    seq(, %eax, 4), %ecx 
+    movl    seq(, %ebx, 4), %edx 
+
+    movl    %ecx, seq(, %ebx, 4)
+    movl    %edx, seq(, %eax, 4)
+    
+    leave 
+    ret
     
 println:
     pushl   %ebp
@@ -118,12 +117,3 @@ print:
     movl    $0, %eax 
     leave
     ret 
-
-tick:
-    pushl   %ebp
-    movl    %esp, %ebp
-    subl    $24, %esp
-    movl    $42, (%esp)
-    call    putchar
-    leave 
-    ret
