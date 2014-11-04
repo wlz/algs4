@@ -4,17 +4,84 @@
     
 fmt:
     .string "%d "
+newline:
+    .string "\n"
 
 main:
     pushl   %ebp
     movl    %esp, %ebp
+    subl    $16, %esp   
 
     call    init 
     call    display
 
+    movl    $newline, (%esp)
+    call    printf 
+    
+    call    shuffle
+    call    display
+    
     movl    $0, %eax 
     leave
     ret
+
+shuffle:
+    pushl   %ebp
+    movl    %esp, %ebp
+    subl    $16, %esp
+
+    movl    $0, (%esp)
+    call    time
+    movl    %eax, (%esp)    
+    call    srand
+
+    movl    $1, %edi 
+loop:
+    call    rand
+    movl    %eax, (%esp)
+    movl    %edi, 4(%esp)
+    call    mod
+
+    movl    %eax, 4(%esp)
+    movl    %edi, (%esp)
+    call    swap
+    
+    addl    $1, %edi
+    cmpl    $10, %edi
+    jl      loop 
+
+    leave
+    ret
+
+swap:
+    pushl   %ebp
+    movl    %esp, %ebp
+    
+    movl    8(%ebp), %eax 
+    movl    12(%ebp), %ebx  
+
+    movl    seq(, %eax, 4), %ecx 
+    movl    seq(, %ebx, 4), %edx 
+
+    movl    %ecx, seq(, %ebx, 4)
+    movl    %edx, seq(, %eax, 4)
+
+    leave
+    ret
+
+mod:
+    pushl   %ebp
+    movl    %esp, %ebp
+    subl    $16, %esp
+    
+    movl    8(%ebp), %edx
+    movl    %edx, %eax
+    sarl    $31, %edx
+    idivl   12(%ebp)
+
+    movl    %edx, %eax 
+    leave
+    ret 
 
 init:
     movl    $0, %eax
