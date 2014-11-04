@@ -88,12 +88,12 @@ enqueue:
     testl   %eax, %eax 
     je      init_last
 
-	movl	last, %eax
-	movl	-4(%ebp), %edx
-	movl	%edx, 4(%eax)
-	movl	-4(%ebp), %eax
-	movl	%eax, last
-	jmp	en_exit
+    movl    last, %eax
+    movl    -4(%ebp), %edx
+    movl    %edx, 4(%eax)
+    movl    -4(%ebx), %eax
+    movl    %eax, last
+    jmp     en_exit
     
 init_first:
     movl    -4(%ebp), %eax 
