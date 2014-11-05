@@ -72,7 +72,7 @@ swap:
 mod:
     pushl   %ebp
     movl    %esp, %ebp  
-    subl    $-16, %esp
+    subl    $16, %esp
     
     movl    8(%ebp), %eax 
     movl    12(%ebp), %ecx 
