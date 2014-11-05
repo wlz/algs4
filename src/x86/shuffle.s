@@ -71,17 +71,17 @@ swap:
 
 mod:
     pushl   %ebp
-    movl    %esp, %ebp
-    subl    $16, %esp
+    movl    %esp, %ebp  
+    subl    $-16, %esp
     
-    movl    8(%ebp), %edx
-    movl    %edx, %eax
-    sarl    $31, %edx
-    idivl   12(%ebp)
-
+    movl    8(%ebp), %eax 
+    movl    12(%ebp), %ecx 
+    movl    $0, %edx 
+    divl    %ecx 
     movl    %edx, %eax 
+    
     leave
-    ret 
+    ret
 
 init:
     movl    $0, %eax
