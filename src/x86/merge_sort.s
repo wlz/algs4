@@ -1,4 +1,5 @@
     .comm   seq,    40
+    .comm   aux,    40
 N:
     .long   10
 
@@ -14,9 +15,33 @@ main:
     subl    $16, %esp
     
     call    init
-    call    display
+    call    display_seq
 
     movl    $0, %eax 
+    leave
+    ret
+
+copy:
+    pushl   %ebp
+    movl    %esp, %ebp
+    subl    $16, %esp
+
+    movl    8(%ebp), %eax
+    movl    %eax, -4(%ebp)
+    movl    12(%ebp), %eax
+    movl    %eax, -8(%ebp)
+
+loop_copy:
+    movl    -4(%ebp), %eax
+    movl    seq(, %eax, 4), %ebx    
+    movl    %ebx, aux(, %eax, 4)
+
+    addl    $1, %eax    
+    movl    %eax, -4(%ebp)
+    movl    -8(%ebp), %ebx 
+    cmpl    %eax, %ebx
+    jge      loop_copy
+
     leave
     ret
 
@@ -94,15 +119,41 @@ swap:
     leave
     ret
 
-display:
+display_seq:
     pushl   %ebp
     movl    %esp, %ebp
     subl    $16, %esp
 
+    movl    $seq, %eax 
+    movl    %eax, (%esp)        
+    call    display
+    leave 
+    ret
+
+display_aux:
+    pushl   %ebp
+    movl    %esp, %ebp
+    subl    $16, %esp
+
+    movl    $aux, %eax 
+    movl    %eax, (%esp)        
+    call    display
+    leave 
+    ret
+
+display:
+    pushl   %ebp
+    movl    %esp, %ebp
+    subl    $16, %esp
+    movl    8(%ebp), %eax
+    movl    %eax, -8(%ebp)
+
     movl    $0, -4(%ebp) 
 loop_show:
     movl    -4(%ebp), %eax
-    movl    seq(, %eax, 4), %eax 
+#    movl    seq(, %eax, 4), %eax 
+    movl    -8(%ebp), %ebx
+    movl    (%ebx, %eax, 4), %eax 
     movl    %eax, 4(%esp)
     movl    $fmt, (%esp)
     call    printf
