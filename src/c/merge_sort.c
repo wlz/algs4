@@ -42,7 +42,7 @@ void merge_sort(int lo, int hi)
 
 void merge(int lo, int mid, int hi)
 {
-    for(int i = 0; i < N; i++)
+    for(int i = lo; i <= hi; i++)
         aux[i] = seq[i];
 
     int j = lo, k = mid + 1;
