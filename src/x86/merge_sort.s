@@ -1,7 +1,7 @@
-    .comm   seq,    40
-    .comm   aux,    40
+    .comm   seq,    400
+    .comm   aux,    400
 N:
-    .long   10
+    .long   100
 
 fmt:
     .string "%d "
@@ -15,9 +15,68 @@ main:
     subl    $16, %esp
     
     call    init
+    call    display_seq 
+
+    movl    $0, (%esp)
+    movl    N, %eax
+    subl    $1, %eax
+    movl    %eax, 4(%esp)
+    call    merge_sort
+
     call    display_seq
 
     movl    $0, %eax 
+    leave
+    ret
+
+merge_sort:
+    pushl   %ebp
+    movl    %esp, %ebp  
+    subl    $40, %esp
+
+    movl    8(%ebp), %eax   
+    movl    12(%ebp), %ebx 
+
+    cmpl    %ebx, %eax
+    je     sort_done 
+
+    movl    %eax, -4(%ebp)
+    movl    %ebx, -8(%ebp)
+
+    subl    %eax, %ebx
+    movl    %ebx, %eax
+
+    movl    $2, %ecx 
+    movl    $0, %edx
+    divl    %ecx 
+
+    movl    -4(%ebp), %ebx
+    addl    %ebx, %eax 
+
+    movl    %eax, -12(%ebp) # mid 
+
+    movl    -4(%ebp), %eax
+    movl    %eax, (%esp)
+    movl    -12(%ebp), %eax
+    movl    %eax, 4(%esp)
+    call    merge_sort
+
+    movl    -12(%ebp), %eax
+    addl    $1, %eax
+    movl    %eax, (%esp)
+    movl    -8(%ebp), %eax
+    movl    %eax, 4(%esp)
+    call    merge_sort
+
+    movl    -4(%ebp), %eax
+    movl    %eax, (%esp)
+    movl    -12(%ebp), %eax
+    movl    %eax, 4(%esp)
+    movl    -8(%ebp), %eax
+    movl    %eax, 8(%esp)
+    call    merge
+
+sort_done:
     leave
     ret
 
@@ -32,7 +91,7 @@ merge:
     movl    %eax, -8(%ebp) # mid
     movl    16(%ebp), %eax
     movl    %eax, -12(%ebp) # hi
-    
+
     movl    -4(%ebp), %eax      
     movl    %eax, (%esp)
     movl    -12(%ebp), %eax     
@@ -66,14 +125,6 @@ move_next:
     movl    aux(, %eax, 4), %eax    # 1
     movl    aux(, %ebx, 4), %ebx    # 0
 
-#    movl    $fmt, (%esp)
-#    movl    %eax, 4(%esp)
-#    call    printf
-#
-#    movl    $fmt, (%esp)
-#    movl    %ebx, 4(%esp)
-#    call    printf
-
     cmpl    %eax, %ebx
     jg      add_left
     
@@ -93,7 +144,7 @@ add_right:
 
     movl    -12(%ebp), %edx
     cmpl    %ecx, %edx 
-    jg      move_next
+    jge      move_next
     jmp     merge_done
 
 add_left:
@@ -110,7 +161,7 @@ add_left:
 
     movl    -12(%ebp), %edx
     cmpl    %ecx, %edx 
-    jg      move_next
+    jge      move_next
     jmp     merge_done
     
 merge_done:
