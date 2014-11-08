@@ -21,6 +21,102 @@ main:
     leave
     ret
 
+merge:
+    pushl   %ebp
+    movl    %esp, %ebp
+    subl    $40, %esp
+
+    movl    8(%ebp), %eax 
+    movl    %eax, -4(%ebp) # lo
+    movl    12(%ebp), %eax 
+    movl    %eax, -8(%ebp) # mid
+    movl    16(%ebp), %eax
+    movl    %eax, -12(%ebp) # hi
+    
+    movl    -4(%ebp), %eax      
+    movl    %eax, (%esp)
+    movl    -12(%ebp), %eax     
+    movl    %eax, 4(%esp)
+    call    copy
+
+    movl    -4(%ebp), %eax
+    movl    %eax, -16(%ebp) # j = lo
+    
+    movl    %eax, -24(%ebp) # i = lo
+
+    movl    -8(%ebp), %eax
+    addl    $1, %eax 
+    movl    %eax, -20(%ebp) # k = mid + 1
+
+move_next:
+
+    movl    -16(%ebp), %eax  # j
+    movl    -8(%ebp), %ebx # mid 
+    cmpl    %ebx, %eax 
+    jg      add_right 
+
+    movl    -20(%ebp), %eax # k
+    movl    -12(%ebp), %ebx # hi
+    cmpl    %ebx, %eax 
+    jg      add_left 
+
+    movl    -16(%ebp), %eax  # j
+    movl    -20(%ebp), %ebx # k
+
+    movl    aux(, %eax, 4), %eax    # 1
+    movl    aux(, %ebx, 4), %ebx    # 0
+
+#    movl    $fmt, (%esp)
+#    movl    %eax, 4(%esp)
+#    call    printf
+#
+#    movl    $fmt, (%esp)
+#    movl    %ebx, 4(%esp)
+#    call    printf
+
+    cmpl    %eax, %ebx
+    jg      add_left
+    
+    jmp     add_right
+
+add_right:
+    movl    -20(%ebp), %eax
+    movl    aux(, %eax, 4), %ebx
+    
+    movl    -24(%ebp), %ecx
+    movl    %ebx, seq(, %ecx, 4)
+
+    addl    $1, %eax 
+    movl    %eax, -20(%ebp)
+    addl    $1, %ecx 
+    movl    %ecx, -24(%ebp)
+
+    movl    -12(%ebp), %edx
+    cmpl    %ecx, %edx 
+    jg      move_next
+    jmp     merge_done
+
+add_left:
+    movl    -16(%ebp), %eax
+    movl    aux(, %eax, 4), %ebx
+    
+    movl    -24(%ebp), %ecx
+    movl    %ebx, seq(, %ecx, 4)
+
+    addl    $1, %eax 
+    movl    %eax, -16(%ebp)
+    addl    $1, %ecx 
+    movl    %ecx, -24(%ebp)
+
+    movl    -12(%ebp), %edx
+    cmpl    %ecx, %edx 
+    jg      move_next
+    jmp     merge_done
+    
+merge_done:
+    leave
+    ret 
+
 copy:
     pushl   %ebp
     movl    %esp, %ebp
@@ -151,7 +247,6 @@ display:
     movl    $0, -4(%ebp) 
 loop_show:
     movl    -4(%ebp), %eax
-#    movl    seq(, %eax, 4), %eax 
     movl    -8(%ebp), %ebx
     movl    (%ebx, %eax, 4), %eax 
     movl    %eax, 4(%esp)
