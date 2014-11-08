@@ -11,11 +11,11 @@ main:
     pushl   %ebp
     movl    %esp, %ebp
     subl    $16, %esp
-    
+
     call    init
     call    display
-
     movl    $0, %eax 
+
     leave
     ret
 
@@ -47,7 +47,24 @@ shuffle:
     movl    %eax, (%esp)
     call    time
     movl    %eax, (%esp)
-    call    srand
+    call    srand 
+
+    movl    $1, %edi 
+    movl    N, %esi 
+
+shuffle_next:
+    call    rand
+    movl    %eax, 4(%esp)
+    movl    %edi, (%esp)
+    call    mod 
+
+    movl    %eax, (%esp)
+    movl    %edi, 4(%esp)
+    call    swap
+
+    addl    $1, %edi
+    cmpl    %edi, %esi
+    jg      shuffle_next
 
     leave
     ret
@@ -61,6 +78,15 @@ swap:
     movl    %edx, seq(, %eax, 4)
     movl    %ecx, seq(, %ebx, 4) 
 
+    ret
+
+mod:
+    movl    4(%esp), %ecx   
+    movl    8(%esp), %eax 
+    movl    $0, %edx
+    divl    %ecx 
+
+    movl    %edx, %eax 
     ret
 
 display:
