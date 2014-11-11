@@ -6,9 +6,9 @@ val_loc:
 op_loc:
     .long   0 
 fmt_c:
-    .string "%c|"
+    .string "%c"
 fmt_d:
-    .string "%d|" 
+    .string "%d" 
 exp:
     .string "(1+((2 + 3)*(4*5)))"
 
