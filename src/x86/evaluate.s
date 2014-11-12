@@ -41,16 +41,16 @@ calc_next:
     cmpb    $0, %al
     je      calc_exit
 
-    cmpb    $40, %al    # (
+    cmpb    $40, %al    # '('
     je      move_next
 
     cmpb    $32, %al    # ' '
     je      move_next
 
-    cmpb    $42, %al    # *
+    cmpb    $42, %al    # '*'
     je      add_op
 
-    cmpb    $43, %al    # +
+    cmpb    $43, %al    # '+'
     je      add_op
 
     cmpb    $41, %al
