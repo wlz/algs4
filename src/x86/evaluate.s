@@ -113,11 +113,6 @@ push_op:
 
     movb    8(%ebp), %al
 
-#    movsbl  %al, %eax
-#    movl    %eax, 4(%esp)
-#    movl    $fmt_c, (%esp)
-#    call    printf 
-
     movl    op_loc, %ebx
     movb    %al, op_stack(, %ebx, 1)
     addl    $1, %ebx
