@@ -8,13 +8,11 @@ def calc(exp):
         elif c == '+' or c == '*':
             ops.append(c)
         elif c == ')':
-            v1 = val.pop()
-            v2 = val.pop()
             op = ops.pop()
             if op == '+':
-                val.append(v1 + v2)
+                val.append(val.pop() + val.pop())
             elif op == '*':
-                val.append(v1 * v2)
+                val.append(val.pop() * val.pop())
         else:
             val.append(ord(c) - 48) 
     return val.pop() 
