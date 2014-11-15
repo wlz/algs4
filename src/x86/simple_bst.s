@@ -12,14 +12,35 @@ main:
     subl    $16, %esp
 
     movl    $1, (%esp)
-    call    put
-
+    call    node_init
     movl    %eax, root
+
+    movl    $3, (%esp)
+    call    node_init
+    movl    root, %ebx
+    movl    $1, %ecx
+    movl    %eax, 4(%ebx)
+
+    movl    $2, (%esp)
+    call    node_init
+    movl    root, %ebx
+    movl    %eax, 8(%ebx)
+
+	movl	root, %eax
+	movl	4(%eax), %eax
+	movl	(%eax), %eax
+    movl    %eax, 4(%esp)
+    movl    $fmt_d, %eax
+    movl    %eax, (%esp)
+	call	printf
+
     movl    root, %eax
+    movl    8(%eax), %eax
     movl    (%eax), %eax
     movl    %eax, 4(%esp)
-    movl    $fmt_d, (%esp)
-    call    printf
+    movl    $fmt_d, %eax
+    movl    %eax, (%esp)
+    call    printf 
 
     movl    $0, %eax 
     leave
@@ -48,6 +69,8 @@ put_node:
     movl    12(%ebp), %eax 
     cmpl    $0, %eax
     je      init_root
+
+#    movl    %eax, -4(%ebp)
 
 init_root:
     movl    8(%ebp), %eax
