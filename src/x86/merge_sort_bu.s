@@ -14,33 +14,93 @@ main:
     movl    %esp, %ebp
     subl    $16, %esp
 
-#    call    init
-    call    set_test
-#    call    display
-
-    movl    $0, 8(%esp)
-    movl    $4, 4(%esp)
-    movl    $9, (%esp)
-
-    call    merge
+    call    init
+    call    display
+    call    merge_sort
     call    display
 
     movl    $0, %eax
     leave
     ret
 
-set_test:
-    movl    $1, seq
-    movl    $3, seq+4
-    movl    $5, seq+8
-    movl    $6, seq+12
-    movl    $7, seq+16
-    movl    $0, seq+20
-    movl    $2, seq+24
-    movl    $4, seq+28
-    movl    $8, seq+32
-    movl    $9, seq+36
+merge_sort:
+    pushl   %ebp
+    movl    %esp, %ebp
+    subl    $40, %esp 
+
+    movl    $2, -4(%ebp) # sz
+    movl    $0, -8(%ebp) # i
+
+sort_next:
+    movl    -8(%ebp), %eax
+    movl    %eax, -12(%ebp)
+
+    movl    -4(%ebp), %eax
+    movl    $2, %ecx
+    movl    $0, %edx
+    divl    %ecx
+    subl    $1, %eax
+    movl    -8(%ebp), %ebx
+    addl    %ebx, %eax
+    movl    %eax, -16(%ebp)
+
+    movl    -8(%ebp), %eax
+    movl    -4(%ebp), %ebx
+    addl    %ebx, %eax
+    subl    $1, %eax
+    movl    %eax, 4(%esp)
+    movl    N, %ebx 
+    subl    $1, %ebx
+    movl    %ebx, (%esp)
+    call    min
+    movl    %eax, -20(%ebp)
+
+    movl    -12(%ebp), %eax
+    movl    %eax, 8(%esp)
+    movl    -16(%ebp), %eax
+    movl    %eax, 4(%esp)   
+    movl    -20(%ebp), %eax
+    movl    %eax, (%esp)
+    call    merge 
+
+    movl    -8(%ebp), %eax
+    movl    -4(%ebp), %ebx
+    addl    %ebx, %eax
+    movl    %eax, -8(%ebp)
+    movl    N, %ebx
+    subl    $1, %ebx
+    cmpl    %eax, %ebx
+    
+    jg      sort_next 
+
+    movl    -4(%ebp), %eax
+    imull   $2, %eax
+    movl    %eax, -4(%ebp)
+
+    movl    N, %ebx
+    imull   $2, %ebx 
+    movl    $0, -8(%ebp) 
+    cmpl    %eax, %ebx
+
+    jg      sort_next
+    
+    leave
     ret
+
+min:
+    pushl   %ebp
+    movl    %esp, %ebp
+    
+    movl    8(%ebp), %eax
+    movl    12(%ebp), %ebx
+    
+    cmpl    %eax, %ebx
+    jg      min_exit
+    movl    %ebx, %eax 
+
+min_exit:
+    leave
+    ret 
 
 merge:
     pushl   %ebp
