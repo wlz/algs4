@@ -11,20 +11,106 @@ main:
     movl    %esp, %ebp
     subl    $16, %esp
 
-    movl    $2, (%esp)
-    call    put
-
-    movl    $1, (%esp)
+    movl    $4, (%esp)
     call    put
 
     movl    $3, (%esp)
     call    put
 
-    movl    root, %eax
-    movl    %eax, (%esp)
-    call    display
+    movl    $1, (%esp)
+    call    put
+
+    movl    $2, (%esp)
+    call    put
 
     movl    $0, %eax 
+    leave
+    ret 
+
+delete:
+    pushl   %ebp
+    movl    %esp, %ebp
+    subl    $16, %esp
+
+    movl    8(%ebp), %eax
+    movl    %eax, 4(%esp)
+    movl    root, %eax
+    movl    %eax, (%esp)
+    call    del_node
+    movl    %eax, root
+
+    leave
+    ret
+
+del_node:
+    pushl   %ebp
+    movl    %esp, %ebp
+    subl    $16, %esp
+    
+    movl    8(%ebp), %eax   #   n
+    cmpl    $0, %eax 
+    je      del_node_exit 
+
+    movl    (%eax), %eax    #   n->data
+    movl    12(%ebp), %ebx  #   data
+    cmpl    %eax, %ebx
+    
+    jg      del_right 
+    jl      del_left 
+    jmp     del_equal
+
+del_right: 
+    movl    8(%ebp), %eax
+    movl    8(%eax), %eax
+    movl    %eax, (%esp)
+    movl    12(%ebp), %eax
+    movl    %eax, 4(%esp)
+    call    del_node 
+    jmp     del_node_exit
+
+del_left:
+    movl    8(%ebp), %eax
+    movl    4(%eax), %eax
+    movl    %eax, (%esp)
+    movl    12(%ebp), %eax
+    movl    %eax, 4(%esp)
+    call    del_node 
+    jmp     del_node_exit
+
+del_equal:
+    jmp     del_node_exit
+
+restore_node:
+    movl    8(%ebp), %eax
+    jmp     del_node_exit
+
+del_node_exit:
+    leave
+    ret
+
+get_min:
+    pushl   %ebp
+    movl    %esp, %ebp
+    subl    $16, %esp
+
+    movl    8(%ebp), %eax
+    cmpl    $0, %eax        #   n == NULL;
+    je      get_min_exit 
+
+    movl    8(%ebp), %eax
+    movl    4(%eax), %eax   
+    cmpl    $0, %eax        #   n->left == NULL;
+    je      return_itself
+
+    movl    %eax, (%esp)
+    call    get_min
+    jmp     get_min_exit
+
+return_itself:
+    movl    8(%ebp), %eax 
+    jmp     get_min_exit
+
+get_min_exit:
     leave
     ret 
 
@@ -76,11 +162,6 @@ put_node:
     movl    %esp, %ebp
     subl    $40, %esp
     
-#    movl    8(%ebp), %eax   #   data
-#    movl    %eax, 4(%esp)
-#    movl    $fmt_d, (%esp)
-#    call    printf
-
     movl    12(%ebp), %eax
     cmpl    $0, %eax
     je      init_new      
