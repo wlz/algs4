@@ -20,32 +20,41 @@ main:
     movl    $3, (%esp)
     call    put
 
-#   printf("%d\n", root->data);
     movl    root, %eax
-    movl    (%eax), %eax
-    movl    %eax, 4(%esp)
-    movl    $fmt_d, (%esp)
-    call    printf
+    movl    %eax, (%esp)
+    call    display
 
-#   printf("%d\n", root->left->data);
-    movl    root, %eax
-    movl    4(%eax), %eax
-    movl    (%eax), %eax
-    movl    %eax, 4(%esp)
-    movl    $fmt_d, (%esp)
-    call    printf
+    movl    $0, %eax 
+    leave
+    ret 
 
-#   printf("%d\n", root->right->data);
-    movl    root, %eax
-    movl    8(%eax), %eax
+display:
+    pushl   %ebp    
+    movl    %esp, %ebp
+    subl    $16, %esp
+
+    movl    8(%ebp), %eax
+    cmpl    $0, %eax
+    je      display_exit
+
     movl    (%eax), %eax
     movl    %eax, 4(%esp)
     movl    $fmt_d, (%esp)
     call    printf 
+
+    movl    8(%ebp), %eax
+    movl    4(%eax), %eax
+    movl    %eax, (%esp)
+    call    display
+
+    movl    8(%ebp), %eax
+    movl    8(%eax), %eax
+    movl    %eax, (%esp)
+    call    display
     
-    movl    $0, %eax 
+display_exit:   
     leave
-    ret 
+    ret
 
 put:
     pushl   %ebp
