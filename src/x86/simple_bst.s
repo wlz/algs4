@@ -1,7 +1,7 @@
     .data
     .comm   root,   4
 fmt_d:
-    .string "%d"
+    .string "%d\n"
 line:
     .string "\n"
 
@@ -11,37 +11,38 @@ main:
     movl    %esp, %ebp
     subl    $16, %esp
 
+    movl    $2, (%esp)
+    call    put
+
     movl    $1, (%esp)
-    call    node_init
-    movl    %eax, root
+    call    put
 
     movl    $3, (%esp)
-    call    node_init
-    movl    root, %ebx
-    movl    $1, %ecx
-    movl    %eax, 4(%ebx)
+    call    put
 
-    movl    $2, (%esp)
-    call    node_init
-    movl    root, %ebx
-    movl    %eax, 8(%ebx)
-
-	movl	root, %eax
-	movl	4(%eax), %eax
-	movl	(%eax), %eax
+#   printf("%d\n", root->data);
+    movl    root, %eax
+    movl    (%eax), %eax
     movl    %eax, 4(%esp)
-    movl    $fmt_d, %eax
-    movl    %eax, (%esp)
-	call	printf
+    movl    $fmt_d, (%esp)
+    call    printf
 
+#   printf("%d\n", root->left->data);
+    movl    root, %eax
+    movl    4(%eax), %eax
+    movl    (%eax), %eax
+    movl    %eax, 4(%esp)
+    movl    $fmt_d, (%esp)
+    call    printf
+
+#   printf("%d\n", root->right->data);
     movl    root, %eax
     movl    8(%eax), %eax
     movl    (%eax), %eax
     movl    %eax, 4(%esp)
-    movl    $fmt_d, %eax
-    movl    %eax, (%esp)
+    movl    $fmt_d, (%esp)
     call    printf 
-
+    
     movl    $0, %eax 
     leave
     ret 
@@ -50,41 +51,77 @@ put:
     pushl   %ebp
     movl    %esp, %ebp
     subl    $16, %esp
-
-    movl    root, %eax
-    movl    %eax, 4(%esp)       
+    
     movl    8(%ebp), %eax
-    movl    %eax, (%esp)
+    movl    %eax, (%esp) 
+    movl    root, %eax
+    movl    %eax, 4(%esp)
     call    put_node
     movl    %eax, root
-    
+
     leave
     ret
 
 put_node:
     pushl   %ebp
     movl    %esp, %ebp
-    subl    $16, %esp
+    subl    $40, %esp
+    
+#    movl    8(%ebp), %eax   #   data
+#    movl    %eax, 4(%esp)
+#    movl    $fmt_d, (%esp)
+#    call    printf
 
-    movl    12(%ebp), %eax 
+    movl    12(%ebp), %eax
     cmpl    $0, %eax
-    je      init_root
+    je      init_new      
 
-#    movl    %eax, -4(%ebp)
+    movl    (%eax), %ebx    #   n->data      
+    movl    8(%ebp), %eax   #   data
+    cmpl    %eax, %ebx
+    jg      add_left
+    jmp     add_right
 
-init_root:
+add_left:
+    movl    12(%ebp), %eax  #   n
+    movl    4(%eax), %eax
+    movl    %eax, 4(%esp)
     movl    8(%ebp), %eax
     movl    %eax, (%esp)
-    call    node_init 
-    jmp     put_node_exit
+    call    put_node 
+    movl    %eax, %ebx
+    movl    12(%ebp), %eax
+    movl    %ebx, 4(%eax)
     
+    jmp     return_node
+
+add_right:
+    movl    12(%ebp), %eax
+    movl    8(%eax), %eax
+    movl    %eax, 4(%esp)
+    movl    8(%ebp), %eax
+    movl    %eax, (%esp)
+    call    put_node
+    movl    %eax, %ebx
+    movl    12(%ebp), %eax
+    movl    %ebx, 8(%eax)
+    
+    jmp     return_node
+
+init_new:
+    movl    8(%ebp), %eax
+    movl    %eax, (%esp)
+    call    node_init
+    jmp     put_node_exit
+
+return_node:
+    movl    12(%ebp), %eax 
+    jmp     put_node_exit 
+
 put_node_exit:
     leave
     ret
 
-put_exit:
-    leave
-    ret
 
 node_init:
     pushl   %ebp
