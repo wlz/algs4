@@ -11,80 +11,65 @@ main:
     movl    %esp, %ebp
     subl    $16, %esp
 
-    movl    $4, (%esp)
-    call    put
-
     movl    $3, (%esp)
-    call    put
-
-    movl    $1, (%esp)
     call    put
 
     movl    $2, (%esp)
     call    put
 
+    movl    $1, (%esp)
+    call    put
+
+    movl    root, %eax
+    movl    %eax, (%esp)
+    call    display
+    
+    movl    $line, (%esp)
+    call    printf
+
+    movl    root, %eax
+    movl    %eax, (%esp)
+    call    del_min
+
+    movl    %eax, root
+
+    movl    root, %eax
+    movl    %eax, (%esp)
+    call    display
+
     movl    $0, %eax 
     leave
     ret 
 
-delete:
+del_min:
     pushl   %ebp
     movl    %esp, %ebp
     subl    $16, %esp
 
-    movl    8(%ebp), %eax
-    movl    %eax, 4(%esp)
-    movl    root, %eax
-    movl    %eax, (%esp)
-    call    del_node
-    movl    %eax, root
+    movl    8(%ebp), %eax 
+    cmpl    $0, %eax
+    je      del_exit
 
-    leave
-    ret
+    movl    4(%eax), %eax
+    cmpl    $0, %eax
+    je      ret_right
 
-del_node:
-    pushl   %ebp
-    movl    %esp, %ebp
-    subl    $16, %esp
-    
-    movl    8(%ebp), %eax   #   n
-    cmpl    $0, %eax 
-    je      del_node_exit 
-
-    movl    (%eax), %eax    #   n->data
-    movl    12(%ebp), %ebx  #   data
-    cmpl    %eax, %ebx
-    
-    jg      del_right 
-    jl      del_left 
-    jmp     del_equal
-
-del_right: 
-    movl    8(%ebp), %eax
-    movl    8(%eax), %eax
-    movl    %eax, (%esp)
-    movl    12(%ebp), %eax
-    movl    %eax, 4(%esp)
-    call    del_node 
-    jmp     del_node_exit
-
-del_left:
-    movl    8(%ebp), %eax
+    movl    8(%ebp), %eax 
     movl    4(%eax), %eax
     movl    %eax, (%esp)
-    movl    12(%ebp), %eax
-    movl    %eax, 4(%esp)
-    call    del_node 
-    jmp     del_node_exit
+    call    del_min
+    movl    8(%ebp), %ebx
+    movl    %eax, 4(%ebx)
+    movl    8(%ebp), %eax 
+    jmp     del_exit
+    
+ret_right:
+    movl    8(%ebp), %eax 
+    movl    8(%eax), %eax 
 
-del_equal:
-    jmp     del_node_exit
+    jmp     del_exit
 
-restore_node:
-    movl    8(%ebp), %eax
-    jmp     del_node_exit
-
-del_node_exit:
+del_exit:   
     leave
     ret
 
