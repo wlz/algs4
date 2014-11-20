@@ -41,6 +41,32 @@ main:
     leave
     ret 
 
+delete:
+    pushl   %ebp
+    movl    %esp, %ebp
+    subl    $40, %esp 
+
+    movl    12(%ebp), %eax
+    cmpl    $0, %eax
+    je      delete_exit
+    
+    movl    (%eax), %eax 
+    movl    8(%ebp), %ebx
+    cmpl    %eax, %ebx 
+
+    jg      del_right
+    jl      del_left
+    
+del_right:
+    jmp     delete_exit
+
+del_left:
+    jmp     delete_exit
+
+delete_exit:
+    leave
+    ret 
+
 del_min:
     pushl   %ebp
     movl    %esp, %ebp
