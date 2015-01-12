@@ -41,3 +41,4 @@ Icon
 /src/cs/*.obj
 /src/java/*.class
 /videos
+/src/js/debug.html
