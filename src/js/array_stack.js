@@ -1,18 +1,15 @@
 var stack = []; 
 var point = 0;
 
-function push(val)
-{ 
+function push(val) { 
     stack[point++] = val;
 }
 
-function pop() 
-{
+function pop() {
     return stack[--point];
 }
 
-function is_empty()
-{
+function is_empty() {
     return point == 0;
 }
 
